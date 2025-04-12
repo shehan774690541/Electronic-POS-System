@@ -1,8 +1,8 @@
 # drawed diagrams and other notices
-/diagrams
+/diagrams/*
 
 # media files
-/store/img/
-/store/mp4/
-/store/pdf/
+/store/img/*
+/store/mp4/*
+/store/pdf/*
 
