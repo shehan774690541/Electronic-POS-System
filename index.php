@@ -3,7 +3,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Fruitables - Vegetable Website Template</title>
+        <title>Electronic - elecroSH</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -43,8 +43,8 @@
             <div class="container topbar bg-primary d-none d-lg-block">
                 <div class="d-flex justify-content-between">
                     <div class="top-info ps-2">
-                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">123 Street, New York</a></small>
-                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">Email@Example.com</a></small>
+                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Kegalla, Sri Lanka</a></small>
+                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">shehan774690541@gmail.com</a></small>
                     </div>
                     <div class="top-link pe-2">
                         <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
@@ -55,7 +55,7 @@
             </div>
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="index.php" class="navbar-brand"><h1 class="text-primary display-6">Fruitables</h1></a>
+                    <a href="index.php" class="navbar-brand"><h1 class="text-primary display-6">electroSH</h1></a>
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-primary"></span>
                     </button>
@@ -117,8 +117,8 @@
             <div class="container py-5">
                 <div class="row g-5 align-items-center">
                     <div class="col-md-12 col-lg-7">
-                        <h4 class="mb-3 text-secondary">100% Organic Foods</h4>
-                        <h1 class="mb-5 display-3 text-primary">Organic Veggies & Fruits Foods</h1>
+                        <h4 class="mb-3 text-secondary">100% Genuine.</h4>
+                        <h1 class="mb-5 display-3 text-primary">Smart Parts for Smart Projects</h1>
                         <div class="position-relative mx-auto">
                             <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="number" placeholder="Search">
                             <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Submit Now</button>
@@ -129,11 +129,11 @@
                             <div class="carousel-inner" role="listbox">
                                 <div class="carousel-item active rounded">
                                     <img src="img/hero-img-1.png" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
-                                    <a href="#" class="btn px-4 py-2 text-white rounded">Fruites</a>
+                                    <a href="#" class="btn px-4 py-2 text-white rounded">SMD</a>
                                 </div>
                                 <div class="carousel-item rounded">
-                                    <img src="img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
-                                    <a href="#" class="btn px-4 py-2 text-white rounded">Vesitables</a>
+                                    <img src="img/hero-img-2.png" class="img-fluid w-100 h-100 rounded" alt="Second slide">
+                                    <a href="#" class="btn px-4 py-2 text-white rounded">Electronic</a>
                                 </div>
                             </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
