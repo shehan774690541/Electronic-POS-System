@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Login - electroSH</title>
-    <link rel="stylesheet" href="./login-style.css">
+    <link rel="stylesheet" href="../css/login-style.css">
     <style>
         input:-webkit-autofill {
         -webkit-box-shadow: 0 0 0 1000px #111 inset !important;
