@@ -74,8 +74,8 @@ CREATE TABLE ithem (
 
 -- Table: promocode
 CREATE TABLE promocode(
-    code_id int AUTO_INCREMENT KEY,
-    code_name varchar(100),
+    code_id INT AUTO_INCREMENT KEY,
+    code_name VARCHAR(100),
     valid BOOLEAN DEFAULT TRUE,
     expired_date DATETIME,
     owner INT,
@@ -87,3 +87,24 @@ CREATE TABLE promocode(
 );
 
 -- Table: checkout
+CREATE TABLE checkout(
+    checkout_id INT AUTO_INCREMENT KEY,
+    user_id INT,
+    ithems TEXT,
+    first_name VARCHAR(150),
+    last_name VARCHAR(150),
+    company_name VARCHAR(255),
+    address VARCHAR(255),
+    distric VARCHAR(255),
+    province VARCHAR(255),
+    postcode VARCHAR(255),
+    mobile VARCHAR(20),
+    email VARCHAR(100),
+    note TEXT,
+    promocode VARCHAR(20),
+    status VARCHAR(255),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES user_role(user_id),
+    CONSTRAINT fk_promocode FOREIGN KEY (promocode) REFERENCES promocode(code_name)
+);
