@@ -48,7 +48,6 @@
 
 <body>
     <section>
-        <!-- Fancy animation spans (you already had them) -->
         <?php for ($i = 0; $i < 300; $i++) echo "<span></span>"; ?>
 
         <div class="signin">
