@@ -233,7 +233,7 @@ if (isset($_POST['register'])) {
         }
         
         function showOtpPopupOTP() {
-            const useOtp = true;
+            const useOtp = false; // s86503
             const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             const letter = letters[Math.floor(Math.random() * letters.length)];
 
@@ -249,7 +249,7 @@ if (isset($_POST['register'])) {
                     [otpArray[i], otpArray[j]] = [otpArray[j], otpArray[i]];
                 }
 
-                alert(otpArray.join(""));
+                // alert(otpArray.join(""));
                 sha256(otpArray.join("")).then(hash => {
                     setCookie("OTP", hash, 1);
                 });
@@ -288,7 +288,8 @@ if (isset($_POST['register'])) {
             const hashedOtp = await sha256(otp);
 
             if (getCookie("OTP") === hashedOtp) {
-                
+                document.getElementById("form_1").style.display = "none";
+                document.getElementById("form_2").style.display = "flex";
             } else {
                 Swal.fire({
                     icon: "error",
