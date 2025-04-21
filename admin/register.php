@@ -120,7 +120,7 @@
                             <input type="text" name="lastName" required> <i>last name</i>
                         </div>
                         <div class="inputBox">
-                            <input type="email" name="email" required> <i>email</i>
+                            <input type="email" name="email" id="save_mail" required> <i>email</i>
                         </div>
 
                         <div class="links"> <a href="#"></a> <a href="login.php">login</a>
@@ -133,11 +133,11 @@
                     </div>
                     <div class="form" id="form_2">
                         <div class="inputBox">
-                            <input type="text" name="userName" required> <i>password</i>
+                            <input type="text" name="password" required> <i>password</i>
                         </div>
 
                         <div class="inputBox">
-                            <input type="text" name="firstName" id="first_name" required> <i>Confirm</i>
+                            <input type="text" name="confirm" required> <i>Confirm</i>
                         </div>
 
                         <div class="links"> <a href="#"></a> <a href="login.php">login</a> </div>
@@ -152,7 +152,7 @@
 
                         <div class="inputBox">
                             <div style="width:100%; padding: 1px;">
-                                <input type="submit" value="NEXT" name="register">
+                                <input type="submit" value="NEXT" target="register.php" name="register">
                             </div>
                         </div>
                     </div>
@@ -170,32 +170,59 @@ if (isset($_POST['register'])) {
     $lastName = trim($_POST['lastName']);
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
-    $confirmPassword = trim($_POST['confirmPassword']);
+    $confirmPassword = trim($_POST['confirm']);
 
     if ($password !== $confirmPassword) {
-        echo "<script>alert('Passwords do not match!');</script>";
+        echo "<script>alert('Passwords do not match!)';</script>";
         exit;
     }
 
-    // reCAPTCHA
-    $recaptcha = $_POST['g-recaptcha-response'];
-    $secret_key = '6Le11R4rAAAAAOM4XmkHFUROrq4EssWpYFfK7O4v';
-    $url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $recaptcha;
-    $response = file_get_contents($url);
-    $response = json_decode($response);
+    // $recaptcha = $_POST['g-recaptcha-response'];
+    // $secret_key = '6Le11R4rAAAAAOM4XmkHFUROrq4EssWpYFfK7O4v';
+    // $url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $recaptcha;
+    // $response = file_get_contents($url);
+    // $response = json_decode($response);
 
-    if (intval($responseKeys["success"]) !== 1) {
-        echo "<script>alert('Please complete CAPTCHA!');</script>";
-        exit;
-    }
+    // if (intval($responseKeys["success"]) !== 1) {
+    //     echo "<script>alert('Please complete CAPTCHA!');</script>";
+    //     exit;
+    // }
 
-    // Example DB Insert (secure this later)
+    $full_name = $firstName . " " . $lastName;
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-    $sql = "INSERT INTO users (username, first_name, last_name, email, password) VALUES ('$userName', '$firstName', '$lastName', '$email', '$passwordHash')";
+    $sql = "INSERT INTO user (user_name, email, password, full_name, role_id) 
+        VALUES ('$userName', '$email', '$passwordHash', '$full_name', 1)";
     if (mysqli_query($conn, $sql)) {
-        echo "<script>alert('Registered successfully!'); window.location='login.php';</script>";
+        echo '<script>
+        Swal.fire({
+            title: "Registration Successsfull!",
+            text: "Press to go to the Home page",
+            icon: "success",
+            background: "#1e1e1e",
+            color: "#ffffff",
+            confirmButtonColor: "#0f0"
+        }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            window.location="../";
+        } 
+        });
+
+        </script>';
     } else {
-        echo "<script>alert('Error: " . mysqli_error($conn) . "');</script>";
+        echo'
+        <script>
+        Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong!",
+                    footer: "' . mysqli_error($conn) . '",
+                    background: "#1e1e1e",
+                    color: "#ffffff",
+                    confirmButtonColor: "#0f0"
+                });
+        </script>
+        ';
     }
 }
 ?>
@@ -233,11 +260,11 @@ if (isset($_POST['register'])) {
         }
         
         function showOtpPopupOTP() {
-            const useOtp = false; // s86503
+            const useOtp = false;
             const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             const letter = letters[Math.floor(Math.random() * letters.length)];
 
-            if(!useOtp){
+            if(useOtp){
                 let numbers = "";
                 for (let i = 0; i < 5; i++) {
                     numbers += Math.floor(Math.random() * 10);
@@ -251,7 +278,9 @@ if (isset($_POST['register'])) {
 
                 // alert(otpArray.join(""));
                 sha256(otpArray.join("")).then(hash => {
-                    setCookie("OTP", hash, 1);
+                    const inputMail = document.getElementById("save_mail").value;
+                    setCookie("OTP", hash, 5);
+                    setCookie("MAIL", inputMail , 5); 
                 });
 
                 document.getElementById('otpPopup').style.display = 'flex';
@@ -295,7 +324,10 @@ if (isset($_POST['register'])) {
                     icon: "error",
                     title: "Oops...",
                     text: "Something went wrong!",
-                    footer: '<a href="#">Why do I have this issue?</a>'
+                    footer: '<a href="#">Why do I have this issue?</a>',
+                    background: '#1e1e1e',
+                    color: '#ffffff',
+                    confirmButtonColor: '#0f0'
                 });
             }
             hideOtpPopup();
@@ -309,10 +341,10 @@ if (isset($_POST['register'])) {
             return hashHex;
         }
 
-        function setCookie(name, value, days = 1) {
-            const date = new Date();
-            date.setTime(date.getTime() + (days*24*60*60*1000));
-            const expires = "expires=" + date.toUTCString();
+        function setCookie(name, value, minutes) {
+            const d = new Date();
+            d.setTime(d.getTime() + (minutes * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
             document.cookie = `${name}=${value}; ${expires}; path=/`;
         }
         

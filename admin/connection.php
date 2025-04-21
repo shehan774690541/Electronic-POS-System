@@ -4,11 +4,10 @@ if (basename(__FILE__) == basename($_SERVER['SCRIPT_FILENAME'])) {
 	exit();
 }else{
 	include("error-block.php");
-
 	$servername = "localhost";
 	$username = "root";
 	$password = "";
-	$dbname = "electrosh";
+	$dbname = "devsh";
 
 	$conn = new mysqli($servername, $username, $password, $dbname);
 
