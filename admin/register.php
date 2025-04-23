@@ -163,6 +163,7 @@
 
     <?php
 include 'connection.php';
+include 'models/encripter.php';
 
 if (isset($_POST['register'])) {
     $userName = trim($_POST['userName']);
@@ -189,7 +190,7 @@ if (isset($_POST['register'])) {
     // }
 
     $full_name = $firstName . " " . $lastName;
-    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+    $passwordHash = hash1($password, PASSWORD_DEFAULT);
     $sql = "INSERT INTO user (user_name, email, password, full_name, role_id) 
         VALUES ('$userName', '$email', '$passwordHash', '$full_name', 1)";
     if (mysqli_query($conn, $sql)) {
