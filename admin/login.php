@@ -17,14 +17,18 @@
 
 <!-- Define popup function early -->
 <script>
-  function popup(){
+  function popup(t_title, t_icon, t_path){
     Swal.fire({
-            title: "Login Successfull!",
-            icon: "success",
+            title: t_title,
+            icon: t_icon,
             draggable: true,
             background: '#1e1e1e',
             color: '#ffffff',
             confirmButtonColor: '#0f0'
+    }).then((result) => {
+        if (result.isConfirmed && t_path) {
+            window.location.href = "../";
+        }
     });
   }
 </script>
@@ -94,7 +98,7 @@
                                         $json_data = json_encode($data);
                                         $base64_data = base64_encode($json_data);
 
-                                        $token_expiry = date('Y-m-d H:i:s', strtotime('+1 hour'));
+                                        $token_expiry = date('Y-m-d H:i:s', strtotime('+5 days'));
                             
                                         $update_stmt = $conn->prepare("UPDATE `user` SET `token` = ?, `token_expiry` = ? WHERE `id` = ?");
                                         $update_stmt->bind_param("ssi", $base64_data, $token_expiry, $dta['id']);
@@ -103,14 +107,17 @@
                                         ?><script>
                                             localStorage.setItem('username', '<?php echo $dta['user_name']; ?>');
                                             localStorage.setItem('token', '<?php echo $base64_data; ?>'); // Store the token
-                                            popup();
+                                            popup("Login Successfull!", "success", true);
                                         </script> 
                                         <?php
                                     } else {
-                                        echo "Invalid email or password.";
+                                        echo "<script>popup('Invalid email or password.', 'error', false);</script>";
+                                        //echo "Invalid email or password.";
                                     }
                                 } else {
-                                    echo "Please enter both email and password.";
+                                    echo "<script>popup('Please enter both email and password.', 'error', false);</script>";
+                                    //echo "Please enter both email and password.";
+
                                 }
                             }
                                                        

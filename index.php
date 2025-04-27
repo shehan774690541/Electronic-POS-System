@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,6 +42,9 @@
             box-shadow: 0px 0px 10px #81c408;
             padding: 10px;
             z-index: 1000;
+        }
+        .log-reg-txt span:hover{
+            color:rgb(139, 214, 0);
         }
         </style>
     </head>
@@ -97,9 +102,30 @@
             panel.appendChild(registerBtn);
         }
     }
+    function user_login(logType){
+        window.location.href = "admin/" + logType;
+    }
+
+    const userData =  localStorage.getItem("token");
+    if (userData) {
+        try {
+            const decodedData = atob(userData);
+            const jsonData = JSON.parse(decodedData);
+            document.cookie = "_uid=" + jsonData.id + "; expires=" + new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toUTCString() + "; path=/";    
+            document.cookie = "_role=" + jsonData.role_id + "; expires=" + new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toUTCString() + "; path=/";    console.log(jsonData);
+            document.cookie = "_expiry=" + jsonData.token_expiry + "; expires=" + new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toUTCString() + "; path=/";    console.log(jsonData);
+            document.cookie = "_uname=" + jsonData.user_name + "; expires=" + new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toUTCString() + "; path=/";    console.log(jsonData);
+        } catch (error) {
+            console.error("Error decoding or parsing user data:", error);
+        }
+    } 
     </script>
     <body>
+<?php
+    
 
+
+?>
         <!-- Spinner Start -->
         <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
             <div class="spinner-grow text-primary" role="status"></div>
@@ -156,12 +182,18 @@
                                     <div style="position: relative; padding: 10px;">
                                         <button onclick="togglePanel();" style="position: absolute; top: 5px; right: 5px; padding: 0px 5px; border: none; background-color: #ff4d4d; color: white; border-radius: 5px;">X</button>
                                         <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 20px;">
-                                            <img src="https://static.vecteezy.com/system/resources/previews/000/439/863/non_2x/vector-users-icon.jpg" alt="Profile Picture" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                                            <div>
-                                                <div style="font-weight: bold;">Chappie Ghost</div>
-                                                <div style="font-size: 12px; color: gray;">examplemyemail541@gmail.com</div>
-                                                <div>logout</div>
-                                            </div>
+                                        <?php
+                                            if (true){?>
+                                                <img src="https://static.vecteezy.com/system/resources/previews/000/439/863/non_2x/vector-users-icon.jpg" alt="Profile Picture" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                                                <div>
+                                                    <div style="font-weight: bold;">Empthy User</div>
+                                                    <div style="font-size: 12px; color: gray;">First Login For Best Experiance</div>
+                                                    <div class="log-reg-txt"><span onclick="user_login('login')">Login</span> | <span onclick="user_login('register')">Register</span></div>
+                                                </div>
+                                        <?php }
+                                                        
+                                                        
+                                        ?>
                                         </div>
                                     </div>
                                 </div>
