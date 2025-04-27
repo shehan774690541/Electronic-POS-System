@@ -7,7 +7,7 @@ if (basename(__FILE__) == basename($_SERVER['SCRIPT_FILENAME'])) {
 	$servername = "localhost";
 	$username = "root";
 	$password = "";
-	$dbname = "devsh";
+	$dbname = "electrosh";
 
 	$conn = new mysqli($servername, $username, $password, $dbname);
 
