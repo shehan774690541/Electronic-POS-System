@@ -53,7 +53,7 @@
         <div class="signin">
             <div class="content">
                 <h2>Sign In</h2>
-                    <form action="" method="post" class="form">
+                    <form action="login" method="post" class="form">
                         <div class="inputBox">
                             <input type="email" name="email" required> <i>email</i>
                         </div>
@@ -67,26 +67,54 @@
                         <p style="color:#ffffff">
                         <?php
                             include 'connection.php';
+                            include 'models/encripter.php';
 
                             if (isset($_POST['login'])) {
-                                $username = trim($_POST['email']);
+                                $email = trim($_POST['email']);
                                 $password = trim($_POST['password']);
+                                
+                                if (!empty($email) && !empty($password)) {
+                                    $stmt = $conn->prepare("SELECT * FROM `user` WHERE `email` = ? AND `password` = ?");
+                                    $stmt->bind_param("ss", $email, hash1($password));
+                                    $stmt->execute();
+                                    $result = $stmt->get_result();
+                            
+                                    if ($result->num_rows > 0) {
+                                        $dta = $result->fetch_assoc();
+                                        echo "<script>console.log(" . json_encode($dta) . ");</script>";
+                                        echo "<script>console.log('User ID: " . $dta['id'] . "');</script>";
 
-                                if (!empty($username) && !empty($password)) {
-                                    $stmt = $conn->prepare("INSERT INTO `test` (`name`, `pass`) VALUES (?, ?)");
-                                    $stmt->bind_param("ss", $username, $password); 
+                                        $data = array(
+                                            "id" => $dta['id'],
+                                            "user_name" => $dta['user_name'],
+                                            "role_id" => $dta['role_id'],
+                                            "token_expiry" => $dta['token_expiry']
+                                        );
+                                        
+                                        $json_data = json_encode($data);
+                                        $base64_data = base64_encode($json_data);
 
-                                    if ($stmt->execute()) {
-                                        echo "<script>popup();</script>";
+                                        $token = bin2hex(random_bytes(16));
+                                        $token_expiry = date('Y-m-d H:i:s', strtotime('+1 hour'));
+                            
+                                        $update_stmt = $conn->prepare("UPDATE `user` SET `token` = ?, `token_expiry` = ? WHERE `id` = ?");
+                                        $update_stmt->bind_param("ssi", $token, $token_expiry, $dta['id']);
+                                        $update_stmt->execute();
+                            
+                                        ?><script>
+                                            localStorage.setItem('username', '<?php echo $dta['user_name']; ?>');
+                                            localStorage.setItem('token', '<?php echo $token; ?>'); // Store the token
+                                            popup();
+                                        </script> 
+                                        <?php
                                     } else {
-                                        echo "Upload failed: " . $stmt->error;
+                                        echo "Invalid email or password.";
                                     }
-
-                                    $stmt->close();
                                 } else {
-                                    echo "All fields are required.";
+                                    echo "Please enter both email and password.";
                                 }
                             }
+                                                       
                         ?>
                     </p>
                 </form>

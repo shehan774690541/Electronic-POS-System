@@ -27,8 +27,77 @@
 
         <!-- Template Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
+        <style>
+        .user-panel {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: #fff;
+            border: 1px solid #81c408;
+            border-radius: 8px;
+            width: 300px;
+            box-shadow: 0px 0px 10px #81c408;
+            padding: 10px;
+            z-index: 1000;
+        }
+        </style>
     </head>
+    <script>
+    let loggedIn = false; // default: not logged in
 
+    function togglePanel() {
+        const panel = document.getElementById('userPanel');
+        if (panel.style.display === 'block') {
+            panel.style.display = 'none';
+        } else {
+            panel.style.display = 'block';
+        }
+    }
+
+    function updatePanel() {
+        const panel = document.getElementById('userPanel');
+        panel.innerHTML = '';
+
+        if (loggedIn) {
+            // After login panel
+            const userName = document.createElement('div');
+            userName.innerText = "Chappie Ghost";
+
+            const userEmail = document.createElement('div');
+            userEmail.innerText = "chappieghost2028@example.com";
+
+            const logoutBtn = document.createElement('button');
+            logoutBtn.innerText = "Logout";
+            logoutBtn.onclick = () => {
+                loggedIn = false;
+                togglePanel();
+            };
+
+            panel.appendChild(userName);
+            panel.appendChild(userEmail);
+            panel.appendChild(logoutBtn);
+
+        } else {
+            // Before login panel
+            const loginBtn = document.createElement('button');
+            loginBtn.innerText = "Login";
+            loginBtn.onclick = () => {
+                loggedIn = true;
+                togglePanel();
+            };
+
+            const registerBtn = document.createElement('button');
+            registerBtn.innerText = "Register";
+            registerBtn.onclick = () => {
+                alert('Redirect to register page...');
+            };
+
+            panel.appendChild(loginBtn);
+            panel.appendChild(registerBtn);
+        }
+    }
+    </script>
     <body>
 
         <!-- Spinner Start -->
@@ -82,7 +151,20 @@
                                 <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
                             </a>
                             <a href="#" class="my-auto">
-                                <i class="fas fa-user fa-2x"></i>
+                                <i class="fas fa-user fa-2x"  alt="User" class="user-icon" onclick="togglePanel()"></i>
+                                <div class="user-panel" id="userPanel">
+                                    <div style="position: relative; padding: 10px;">
+                                        <button onclick="togglePanel();" style="position: absolute; top: 5px; right: 5px; padding: 0px 5px; border: none; background-color: #ff4d4d; color: white; border-radius: 5px;">X</button>
+                                        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 20px;">
+                                            <img src="https://static.vecteezy.com/system/resources/previews/000/439/863/non_2x/vector-users-icon.jpg" alt="Profile Picture" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                                            <div>
+                                                <div style="font-weight: bold;">Chappie Ghost</div>
+                                                <div style="font-size: 12px; color: gray;">examplemyemail541@gmail.com</div>
+                                                <div>logout</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </a>
                         </div>
                     </div>
@@ -90,8 +172,10 @@
             </div>
         </div>
         <!-- Navbar End -->
-
-
+<!-- 
+<div></div>
+                                    <center onclick="togglePanel()">hide</center>        
+-->
         <!-- Modal Search Start -->
         <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-fullscreen">

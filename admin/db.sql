@@ -1,5 +1,5 @@
-CREATE DATABASE devsh;
-USE devsh;
+CREATE DATABASE electrosh;
+USE electrosh;
 
 -- Table: user_role
 CREATE TABLE user_role (
@@ -25,7 +25,7 @@ CREATE TABLE user_permission (
 CREATE TABLE user (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_name VARCHAR(100) NOT NULL,
-    email VARCHAR(150) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE, 
     password VARCHAR(255) NOT NULL,
     full_name VARCHAR(255) NOT NULL,
     role_id INT,
@@ -108,3 +108,10 @@ CREATE TABLE checkout(
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES user_role(user_id),
     CONSTRAINT fk_promocode FOREIGN KEY (promocode) REFERENCES promocode(code_name)
 );
+
+INSERT INTO `user_role` (`role_id`, `level`, `role_name`, `created_at`, `updated_at`) 
+VALUES ('1', '1', 'user', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+        ('2', '2', 'shop', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
+        ('3', '3', 'super-admin', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+        ('4', '4', 'management', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+        ('4', '4', 'owner', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
