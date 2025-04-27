@@ -51,6 +51,13 @@
     <script>
     let loggedIn = false; // default: not logged in
 
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return "";
+    }
+
     function togglePanel() {
         const panel = document.getElementById('userPanel');
         if (panel.style.display === 'block') {
@@ -103,29 +110,63 @@
         }
     }
     function user_login(logType){
-        window.location.href = "admin/" + logType;
+        if (logType != "logout"){
+            window.location.href = "admin/" + logType;
+        }else{
+            localStorage.setItem('token','');
+            document.cookie = "_uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";    
+            document.cookie = "_role=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "_expiry=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "_uname=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";    
+            window.location.href = "";
+        }
     }
 
     const userData =  localStorage.getItem("token");
+    if(userData != "" && getCookie("_uid") == ""){
+        window.location.reload(true);   
+    }else{
+        console.log("user data : ", userData);
+        var cki = getCookie("_uid");
+        console.log("cookie", cki);
+    }
+
     if (userData) {
         try {
             const decodedData = atob(userData);
             const jsonData = JSON.parse(decodedData);
             document.cookie = "_uid=" + jsonData.id + "; expires=" + new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toUTCString() + "; path=/";    
-            document.cookie = "_role=" + jsonData.role_id + "; expires=" + new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toUTCString() + "; path=/";    console.log(jsonData);
-            document.cookie = "_expiry=" + jsonData.token_expiry + "; expires=" + new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toUTCString() + "; path=/";    console.log(jsonData);
-            document.cookie = "_uname=" + jsonData.user_name + "; expires=" + new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toUTCString() + "; path=/";    console.log(jsonData);
+            document.cookie = "_role=" + jsonData.role_id + "; expires=" + new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toUTCString() + "; path=/";
+            document.cookie = "_expiry=" + jsonData.token_expiry + "; expires=" + new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toUTCString() + "; path=/";
+            document.cookie = "_uname=" + jsonData.user_name + "; expires=" + new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toUTCString() + "; path=/";
         } catch (error) {
             console.error("Error decoding or parsing user data:", error);
         }
-    } 
+    }
+
+    
     </script>
     <body>
 <?php
-    
+    include 'admin/connection.php';
+    $id = $_COOKIE['_uid'];
+    $stmt = $conn->prepare("SELECT * FROM `user` WHERE `id` = ?");
+    $stmt->bind_param("s", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
+    if ($result->num_rows > 0) {
+        $dta = $result->fetch_assoc();
 
-?>
+        $user_name = $dta["user_name"];
+        $email = $dta["email"];
+        $full_name = $dta["full_name"];
+        $role_id = $dta["role_id"];
+        $profile_pic = $dta["profile_pic"];
+    } else {
+        echo "<script>console.log('No user found with the provided email.');</script>";
+    }
+?>    
         <!-- Spinner Start -->
         <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
             <div class="spinner-grow text-primary" role="status"></div>
@@ -183,17 +224,21 @@
                                         <button onclick="togglePanel();" style="position: absolute; top: 5px; right: 5px; padding: 0px 5px; border: none; background-color: #ff4d4d; color: white; border-radius: 5px;">X</button>
                                         <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 20px;">
                                         <?php
-                                            if (true){?>
-                                                <img src="https://static.vecteezy.com/system/resources/previews/000/439/863/non_2x/vector-users-icon.jpg" alt="Profile Picture" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                                            if ($role_id == $id){?>
+                                                <img src="img/uncounUser.png" alt="Profile Picture" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 10px;">
                                                 <div>
                                                     <div style="font-weight: bold;">Empthy User</div>
                                                     <div style="font-size: 12px; color: gray;">First Login For Best Experiance</div>
                                                     <div class="log-reg-txt"><span onclick="user_login('login')">Login</span> | <span onclick="user_login('register')">Register</span></div>
                                                 </div>
-                                        <?php }
-                                                        
-                                                        
-                                        ?>
+                                        <?php }else{ ?> 
+                                            <img src="img/uncounUser.png" alt="Profile Picture" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 10px;">
+                                            <div>
+                                                <div style="font-weight: bold;"><?php echo $user_name ?></div>
+                                                <div style="font-size: 12px; color: gray;"><?php echo $email ?></div>
+                                                <div class="log-reg-txt"><span onclick="user_login('logout')">Logout</span></div>
+                                            </div>
+                                        <?php }?>
                                         </div>
                                     </div>
                                 </div>
