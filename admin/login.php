@@ -85,8 +85,6 @@
                             
                                     if ($result->num_rows > 0) {
                                         $dta = $result->fetch_assoc();
-                                        echo "<script>console.log(" . json_encode($dta) . ");</script>";
-                                        echo "<script>console.log('User ID: " . $dta['id'] . "');</script>";
 
                                         $data = array(
                                             "id" => $dta['id'],
