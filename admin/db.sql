@@ -119,4 +119,4 @@ VALUES ('1', '1', 'user', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 
 -- Insert: user | owner
 INSERT INTO `user` (`id`, `user_name`, `email`, `password`, `full_name`, `role_id`, `token`, `token_expiry`, `cart`, `profile_pic`, `banned`, `created_at`, `updated_at`) 
-VALUES (NULL, 'electrosh', 'shehan774690541@gmail.com', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 'Shehan Rajapaksha', '4', NULL, NULL, NULL, NULL, '0', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+VALUES (NULL, 'electrosh', 'shehan774690541@gmail.com', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 'Shehan Rajapaksha', '5', NULL, NULL, NULL, NULL, '0', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
