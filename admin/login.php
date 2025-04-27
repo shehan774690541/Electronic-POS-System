@@ -72,7 +72,7 @@
                             if (isset($_POST['login'])) {
                                 $email = trim($_POST['email']);
                                 $password = trim($_POST['password']);
-                                
+                            
                                 if (!empty($email) && !empty($password)) {
                                     $stmt = $conn->prepare("SELECT * FROM `user` WHERE `email` = ? AND `password` = ?");
                                     $stmt->bind_param("ss", $email, hash1($password));
@@ -94,16 +94,15 @@
                                         $json_data = json_encode($data);
                                         $base64_data = base64_encode($json_data);
 
-                                        $token = bin2hex(random_bytes(16));
                                         $token_expiry = date('Y-m-d H:i:s', strtotime('+1 hour'));
                             
                                         $update_stmt = $conn->prepare("UPDATE `user` SET `token` = ?, `token_expiry` = ? WHERE `id` = ?");
-                                        $update_stmt->bind_param("ssi", $token, $token_expiry, $dta['id']);
+                                        $update_stmt->bind_param("ssi", $base64_data, $token_expiry, $dta['id']);
                                         $update_stmt->execute();
                             
                                         ?><script>
                                             localStorage.setItem('username', '<?php echo $dta['user_name']; ?>');
-                                            localStorage.setItem('token', '<?php echo $token; ?>'); // Store the token
+                                            localStorage.setItem('token', '<?php echo $base64_data; ?>'); // Store the token
                                             popup();
                                         </script> 
                                         <?php

@@ -109,9 +109,14 @@ CREATE TABLE checkout(
     CONSTRAINT fk_promocode FOREIGN KEY (promocode) REFERENCES promocode(code_name)
 );
 
+-- Insert: user_role | main roles
 INSERT INTO `user_role` (`role_id`, `level`, `role_name`, `created_at`, `updated_at`) 
-VALUES ('1', '1', 'user', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-        ('2', '2', 'shop', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
-        ('3', '3', 'super-admin', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('4', '4', 'management', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-        ('4', '4', 'owner', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+VALUES ('1', '1', 'user', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       ('2', '2', 'shop', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
+       ('3', '3', 'super-admin', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       ('4', '4', 'management', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       ('5', '4', 'owner', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- Insert: user | owner
+INSERT INTO `user` (`id`, `user_name`, `email`, `password`, `full_name`, `role_id`, `token`, `token_expiry`, `cart`, `profile_pic`, `banned`, `created_at`, `updated_at`) 
+VALUES (NULL, 'electrosh', 'shehan774690541@gmail.com', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 'Shehan Rajapaksha', '4', NULL, NULL, NULL, NULL, '0', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
